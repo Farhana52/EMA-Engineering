@@ -81,15 +81,15 @@ function Sigs({ companyName, cls = 'border-t border-black', isInvoice = false }:
   return (
     <div className="mt-20 sm:mt-24 pt-2 break-inside-avoid text-black">
       <div className="flex justify-between items-end">
-        <div className="text-center w-[150px]">
-          <div className={`${cls} pt-2`}>
+        <div className="text-center">
+          <div className={`inline-block ${cls} pt-1.5 px-1`}>
             <p className="font-bold text-[10px] sm:text-[10.5px] uppercase tracking-wider text-black whitespace-nowrap">
               {isInvoice ? "Customer's Signature" : "Received Signature"}
             </p>
           </div>
         </div>
-        <div className="text-center w-[150px]">
-          <div className={`${cls} pt-2`}>
+        <div className="text-center">
+          <div className={`inline-block ${cls} pt-1.5 px-1`}>
             <p className="font-bold text-[10px] sm:text-[10.5px] uppercase tracking-wider text-black whitespace-nowrap">
               Authorized Signature
             </p>
