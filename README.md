@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EMA Engineering - Quotation & Invoice Management System
 
-## Getting Started
+A Next.js & MongoDB application for generating, managing, and printing industrial quotations and invoices with standard commercial formatting.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Company Settings:** Configure company details, branding, address, phone numbers, and default terms & conditions.
+- **Product Catalog:** Manage products and services with specifications, capacities, and default pricing.
+- **Quotation Generator:** Create itemized quotes with automatic serial numbers, discounts, item quantities, total calculation, and "In Word Taka" conversion.
+- **Print & PDF Templates:** Classic and Formal printable document templates designed for pixel-perfect printing and client submission.
+- **MongoDB Atlas Integration:** Persistent storage with serverless connection pooling.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Getting Started Locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Farhana52/EMA-Engineering.git
+   cd EMA-Engineering
+   ```
 
-## Learn More
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. Configure environment variables:
+   Copy `.env.example` to `.env.local` and fill in your MongoDB connection details:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Add your MongoDB Atlas URI:
+   ```env
+   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority
+   MONGODB_DB_NAME=invoice_pro_db
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Run development server:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Deploying on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push this repository to GitHub.
+2. Import the repository into **[Vercel](https://vercel.com/new)**.
+3. In the Vercel project configuration, under **Environment Variables**, add:
+   - `MONGODB_URI`: Your MongoDB Atlas connection string.
+   - `MONGODB_DB_NAME`: `invoice_pro_db` (or your preferred database name).
+4. Deploy! Vercel will automatically build and host the Next.js serverless application.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
