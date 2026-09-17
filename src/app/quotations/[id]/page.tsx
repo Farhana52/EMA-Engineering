@@ -156,7 +156,7 @@ function TplClassic({ quotation: q, companyName, companyTagline, companyAddress,
       <div className="mb-5">
         <table className="w-full border-collapse border border-black text-[10.5px]">
           <thead>
-            <tr className="border-b border-black text-neutral-900 font-bold">
+            <tr className="border-b border-black text-black font-bold text-[11px]">
               <th className="border-r border-black px-2 py-2 w-10 text-center">SL.</th>
               <th className="border-r border-black px-2.5 py-2 text-left">Particulars</th>
               <th className="border-r border-black px-2 py-2 w-[76px] text-right leading-snug">List Unit<br/>Price</th>
@@ -200,7 +200,7 @@ function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, 
       <div className="mb-4">
         <table className="w-full border-collapse border border-black text-[10.5px]">
           <thead>
-            <tr className="border-b border-black text-neutral-900 font-bold">
+            <tr className="border-b border-black text-black font-bold text-[11px]">
               <th className="border-r border-black px-2 py-2 w-10 text-center">SL.No</th>
               <th className="border-r border-black px-2.5 py-2 text-left">Particulars</th>
               <th className="border-r border-black px-2 py-2 w-[76px] text-right leading-snug">List Unit<br/>Price</th>
