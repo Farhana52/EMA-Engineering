@@ -1,9 +1,19 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Building2, Save, Plus, Trash2, CheckCircle2, AlertCircle, FileText, Phone, MapPin } from 'lucide-react';
+import { Building2, Save, Plus, Trash2, CheckCircle2, AlertCircle, FileText, Phone, MapPin, Palette } from 'lucide-react';
 import { CompanySettings } from '@/types/invoice';
 import { useToast } from '@/components/Toast';
+
+const COLOR_PRESETS = [
+  { label: 'Red (Default)', color: '#dc2626' },
+  { label: 'Navy', color: '#1e3a8a' },
+  { label: 'Blue', color: '#2563eb' },
+  { label: 'Emerald', color: '#059669' },
+  { label: 'Slate', color: '#0f172a' },
+  { label: 'Violet', color: '#7c3aed' },
+  { label: 'Amber', color: '#d97706' },
+];
 
 export default function SettingsPage() {
   const { showToast } = useToast();
@@ -14,6 +24,7 @@ export default function SettingsPage() {
     phone: '+880 1700-000000',
     showPhone: true,
     showAddress: true,
+    companyNameColor: '#dc2626',
     defaultTerms: [
       '01) Our offer will remain valid for a period of 15 days from the date of this offer.',
       '02) 100% cash/PO/Cheque as an advance before delivery.',
@@ -162,6 +173,76 @@ export default function SettingsPage() {
                 className="w-full bg-white border border-slate-200 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 rounded-xl px-4 py-2.5 text-sm text-slate-900 font-medium placeholder:text-slate-400 shadow-xs transition-all outline-none"
               />
               <p className="text-[11px] text-slate-400 mt-1">Sub-heading right under the company name.</p>
+            </div>
+
+            <div className="md:col-span-2 pt-3 border-t border-slate-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-2.5">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 tracking-tight">
+                    Default Company Name Color (Letterhead)
+                  </label>
+                  <p className="text-[11px] text-slate-400">
+                    Default color applied to your company letterhead header on quotations.
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-2 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 self-start sm:self-auto shadow-2xs">
+                  <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Preview:</span>
+                  <span className="text-sm font-black tracking-tight leading-none" style={{ color: settings.companyNameColor || '#dc2626' }}>
+                    {settings.name || 'EMA Engineering'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                {COLOR_PRESETS.map((p) => {
+                  const isSelected = (settings.companyNameColor || '#dc2626').toLowerCase() === p.color.toLowerCase();
+                  return (
+                    <button
+                      key={p.color}
+                      type="button"
+                      onClick={() => setSettings({ ...settings, companyNameColor: p.color })}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-semibold transition-all ${
+                        isSelected
+                          ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
+                          : 'border-slate-200 bg-white hover:border-slate-300 text-slate-700'
+                      }`}
+                    >
+                      <span
+                        className="w-3 h-3 rounded-full border border-black/15 shadow-2xs flex-shrink-0"
+                        style={{ backgroundColor: p.color }}
+                      />
+                      <span>{p.label}</span>
+                    </button>
+                  );
+                })}
+
+                <div className="inline-flex items-center gap-1.5 bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-2 py-1 transition-all">
+                  <label
+                    title="Pick custom color"
+                    className="inline-flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-slate-600"
+                  >
+                    <Palette className="w-3.5 h-3.5 text-slate-400" />
+                    <span
+                      className="w-3.5 h-3.5 rounded-full border border-black/20 shadow-2xs flex-shrink-0"
+                      style={{ backgroundColor: settings.companyNameColor || '#dc2626' }}
+                    />
+                    <input
+                      type="color"
+                      value={(settings.companyNameColor?.startsWith('#') && settings.companyNameColor.length === 7) ? settings.companyNameColor : '#dc2626'}
+                      onChange={(e) => setSettings({ ...settings, companyNameColor: e.target.value })}
+                      className="sr-only"
+                    />
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.companyNameColor || '#dc2626'}
+                    onChange={(e) => setSettings({ ...settings, companyNameColor: e.target.value })}
+                    placeholder="#dc2626"
+                    maxLength={7}
+                    className="w-18 text-xs font-mono font-semibold text-slate-800 focus:outline-none uppercase"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

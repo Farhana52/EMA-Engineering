@@ -34,6 +34,7 @@ type TplProps = {
   companyPhone: string;
   companyEmail: string;
   companyWebsite: string;
+  companyNameColor?: string;
 };
 
 function fmt(n: number) {
@@ -136,12 +137,13 @@ function Terms({ q }: { q: Quotation }) {
 }
 
 // ── Template 1: Classic (Default) ─────────────────────────────────────────────
-function TplClassic({ quotation: q, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite }: TplProps) {
+function TplClassic({ quotation: q, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite, companyNameColor }: TplProps) {
+  const brandColor = q.companyNameColor || companyNameColor || '#dc2626';
   return (
     <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:p-0 print:w-full text-[11px] text-black w-full box-border">
       <div className="flex justify-between items-start gap-4 mb-6">
         <div className="flex-1 min-w-0">
-          <h1 className="text-[26px] font-black text-[#dc2626] tracking-tight leading-none mb-1">{companyName}</h1>
+          <h1 className="text-[26px] font-black tracking-tight leading-none mb-1" style={{ color: brandColor }}>{companyName}</h1>
           <p className="text-[11px] font-medium italic text-neutral-600">{companyTagline}</p>
         </div>
         <ContactRight a={companyAddress} p={companyPhone} e={companyEmail} w={companyWebsite} />
@@ -175,11 +177,12 @@ function TplClassic({ quotation: q, companyName, companyTagline, companyAddress,
 }
 
 // ── Template 2: Formal ────────────────────────────────────────────────────────
-function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite }: TplProps) {
+function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite, companyNameColor }: TplProps) {
+  const brandColor = q.companyNameColor || companyNameColor || '#dc2626';
   return (
     <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:p-0 print:w-full text-[11px] text-black w-full box-border">
       <div className="text-center mb-4 pb-3 border-b border-black">
-        <h1 className="text-[26px] font-black text-[#dc2626] tracking-tight leading-none mb-1">{companyName}</h1>
+        <h1 className="text-[26px] font-black tracking-tight leading-none mb-1" style={{ color: brandColor }}>{companyName}</h1>
         <p className="text-xs font-medium text-neutral-600 mt-0.5">{companyTagline}</p>
         {companyAddress && (
           <p className="text-[11px] font-bold text-neutral-900 mt-1.5">{companyAddress}</p>
@@ -325,8 +328,9 @@ export default function QuotationViewPage({ params }: { params: Promise<{ id: st
   const companyPhone   = settings?.showPhone   !== false ? (settings?.phone   || '') : '';
   const companyEmail   = settings?.showEmail   !== false ? (settings?.email   || '') : '';
   const companyWebsite = settings?.showWebsite !== false ? (settings?.website || '') : '';
+  const companyNameColor = quotation.companyNameColor || settings?.companyNameColor || '#dc2626';
 
-  const tplProps: TplProps = { quotation, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite };
+  const tplProps: TplProps = { quotation, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite, companyNameColor };
   const activeTpl = TEMPLATES.find(t => t.id === template)!;
 
   return (

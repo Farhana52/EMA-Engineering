@@ -10,6 +10,7 @@ export interface CompanySettings {
   showEmail?: boolean;
   showWebsite?: boolean;
   showAddress?: boolean;
+  companyNameColor?: string;
   defaultTerms: string[];
   updatedAt?: string;
 }
@@ -53,6 +54,7 @@ export interface Quotation {
   terms: string[];
   showTerms?: boolean;
   companyAddress?: string;
+  companyNameColor?: string;
   status: 'Draft' | 'Sent' | 'Accepted' | 'Declined';
   createdAt?: string;
   updatedAt?: string;

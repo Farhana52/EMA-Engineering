@@ -13,6 +13,7 @@ const DEFAULT_SETTINGS: CompanySettings = {
   showEmail: false,
   showWebsite: false,
   showAddress: true,
+  companyNameColor: '#dc2626',
   defaultTerms: [
     '01) Our offer will remain valid for a period of 15 days from the date of this offer.',
     '02) 100% cash/PO/Cheque as an advance before delivery.',
@@ -36,6 +37,7 @@ export async function GET() {
       showEmail: settings.showEmail !== undefined ? settings.showEmail : true,
       showWebsite: settings.showWebsite !== undefined ? settings.showWebsite : true,
       showAddress: settings.showAddress !== undefined ? settings.showAddress : true,
+      companyNameColor: settings.companyNameColor || DEFAULT_SETTINGS.companyNameColor,
     };
     return NextResponse.json(resolved);
   } catch (error: unknown) {
@@ -59,6 +61,7 @@ export async function POST(req: Request) {
       showEmail: typeof body.showEmail === 'boolean' ? body.showEmail : true,
       showWebsite: typeof body.showWebsite === 'boolean' ? body.showWebsite : true,
       showAddress: typeof body.showAddress === 'boolean' ? body.showAddress : true,
+      companyNameColor: body.companyNameColor || DEFAULT_SETTINGS.companyNameColor,
       defaultTerms: Array.isArray(body.defaultTerms) ? body.defaultTerms : DEFAULT_SETTINGS.defaultTerms,
       updatedAt: new Date().toISOString()
     };

@@ -91,6 +91,7 @@ export async function POST(req: Request) {
       terms: Array.isArray(body.terms) ? body.terms : [],
       showTerms: body.showTerms !== false,
       companyAddress: body.companyAddress || '',
+      companyNameColor: body.companyNameColor || '#dc2626',
       status: body.status || 'Draft',
       createdAt: new Date().toISOString()
     };
