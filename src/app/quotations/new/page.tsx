@@ -106,8 +106,6 @@ export default function NewQuotationPage() {
     return `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
   });
   const [quoteNumber, setQuoteNumber] = useState('');
-  const [poNumber, setPoNumber] = useState('');
-  const [dueDate, setDueDate] = useState('');
 
   /* client */
   const [clientDesignation, setClientDesignation] = useState('Managing Director');
@@ -275,8 +273,6 @@ export default function NewQuotationPage() {
           subject: subject.trim(),
           salutation: docType === 'Invoice' ? '' : salutation,
           openingText: docType === 'Invoice' ? '' : openingText,
-          poNumber: poNumber.trim() || undefined,
-          dueDate: dueDate.trim() || undefined,
           items: sanitizedItems,
           totalQty, totalAmount, inWords, terms, showTerms, companyAddress,
           companyNameColor,
@@ -370,29 +366,6 @@ export default function NewQuotationPage() {
               />
             </Field>
 
-            {docType === 'Invoice' && (
-              <>
-                <Field label="Payment Terms / Due (Optional)">
-                  <input
-                    type="text"
-                    value={dueDate}
-                    onChange={(e) => setDueDate(e.target.value)}
-                    placeholder="e.g. Due on Receipt, Net 15, or 30-09-2026"
-                    className={INPUT}
-                  />
-                </Field>
-
-                <Field label="PO / Challan / Work Order # (Optional)">
-                  <input
-                    type="text"
-                    value={poNumber}
-                    onChange={(e) => setPoNumber(e.target.value)}
-                    placeholder="e.g. PO-2026-0891 or Challan #104"
-                    className={INPUT}
-                  />
-                </Field>
-              </>
-            )}
           </div>
 
           {/* ── Company Header Branding Color ── */}

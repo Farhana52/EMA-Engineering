@@ -131,19 +131,9 @@ function ToBlock({ q, cls = '' }: { q: Quotation; cls?: string }) {
 }
 
 function DateRef({ q, cls = '' }: { q: Quotation; cls?: string }) {
-  const isInvoice = q.docType === 'Invoice';
   return (
-    <div className={`text-right flex-shrink-0 text-xs space-y-0.5 ${cls}`}>
-      {isInvoice && (
-        <p><span className="font-bold text-neutral-900">Invoice No :</span> <span className="tabular-nums font-bold text-neutral-900">{q.quoteNumber}</span></p>
-      )}
-      <p><span className="font-semibold text-neutral-800">{isInvoice ? 'Invoice Date :' : 'Date :'}</span> <span className="tabular-nums font-medium text-neutral-700">{q.date}</span></p>
-      {isInvoice && q.dueDate && (
-        <p><span className="font-semibold text-neutral-800">Payment Terms :</span> <span className="font-medium text-neutral-700">{q.dueDate}</span></p>
-      )}
-      {isInvoice && q.poNumber && (
-        <p><span className="font-semibold text-neutral-800">PO / Challan Ref :</span> <span className="font-medium text-neutral-700">{q.poNumber}</span></p>
-      )}
+    <div className={`text-right flex-shrink-0 text-xs ${cls}`}>
+      <p><span className="font-semibold text-neutral-800">Date :</span> <span className="tabular-nums font-medium text-neutral-700">{q.date}</span></p>
     </div>
   );
 }
