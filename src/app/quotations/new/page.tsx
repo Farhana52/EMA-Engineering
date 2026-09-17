@@ -337,8 +337,8 @@ export default function NewQuotationPage() {
                 required
                 value={clientCompany}
                 onChange={(e) => setClientCompany(e.target.value)}
-                placeholder="e.g. NEWAGE GARMENTS LTD."
-                className={`${INPUT} font-bold uppercase`}
+                placeholder="e.g. NewAge Garments Ltd."
+                className={`${INPUT} font-bold`}
               />
             </Field>
 

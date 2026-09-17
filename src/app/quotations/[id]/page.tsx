@@ -111,7 +111,7 @@ function ToBlock({ q, cls = '' }: { q: Quotation; cls?: string }) {
     <div className={`space-y-0.5 ${cls}`}>
       <p className="font-semibold text-neutral-600 text-xs">To,</p>
       {q.clientDesignation && <p className="text-xs text-neutral-700 font-medium">{q.clientDesignation}</p>}
-      <p className="font-bold text-xs uppercase tracking-wide text-neutral-900">{q.clientCompany}</p>
+      <p className="font-bold text-xs tracking-wide text-neutral-900">{q.clientCompany}</p>
       {q.clientAddress && <p className="text-xs text-neutral-600">{q.clientAddress}</p>}
     </div>
   );
