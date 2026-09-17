@@ -119,9 +119,8 @@ function ToBlock({ q, cls = '' }: { q: Quotation; cls?: string }) {
 
 function DateRef({ q, cls = '' }: { q: Quotation; cls?: string }) {
   return (
-    <div className={`text-right flex-shrink-0 text-xs space-y-1 ${cls}`}>
+    <div className={`text-right flex-shrink-0 text-xs ${cls}`}>
       <p><span className="font-semibold text-neutral-800">Date :</span> <span className="tabular-nums font-medium text-neutral-700">{q.date}</span></p>
-      {q.quoteNumber && <p><span className="font-semibold text-neutral-800">Ref No :</span> <span className="font-medium text-neutral-700">{q.quoteNumber}</span></p>}
     </div>
   );
 }
