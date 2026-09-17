@@ -79,18 +79,20 @@ function TableBody({ items, totalQty, totalAmount, bc = 'border-black', isInvoic
 
 function Sigs({ companyName, cls = 'border-t border-black', isInvoice = false }: { companyName?: string; cls?: string; isInvoice?: boolean }) {
   return (
-    <div className="mt-14 break-inside-avoid">
+    <div className="mt-20 sm:mt-24 pt-2 break-inside-avoid">
       <div className="flex justify-between items-end">
-        <div className="text-center w-48">
+        <div className="text-center w-[150px]">
           <div className={`${cls} pt-2`}>
-            <p className="font-semibold text-[11px] uppercase tracking-wider text-neutral-800">
+            <p className="font-medium text-[10px] sm:text-[10.5px] uppercase tracking-wider text-neutral-600 whitespace-nowrap">
               {isInvoice ? "Customer's Signature" : "Received Signature"}
             </p>
           </div>
         </div>
-        <div className="text-center w-48">
+        <div className="text-center w-[150px]">
           <div className={`${cls} pt-2`}>
-            <p className="font-semibold text-[11px] uppercase tracking-wider text-neutral-800">Authorized Signature</p>
+            <p className="font-medium text-[10px] sm:text-[10.5px] uppercase tracking-wider text-neutral-600 whitespace-nowrap">
+              Authorized Signature
+            </p>
           </div>
         </div>
       </div>
