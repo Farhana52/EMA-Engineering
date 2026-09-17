@@ -139,7 +139,7 @@ function Terms({ q }: { q: Quotation }) {
 // ── Template 1: Classic (Default) ─────────────────────────────────────────────
 function TplClassic({ quotation: q, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite }: TplProps) {
   return (
-    <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:px-0 print:py-0 text-[11px] text-black">
+    <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:p-0 print:w-full text-[11px] text-black w-full box-border">
       <div className="flex justify-between items-start gap-4 mb-6">
         <div className="flex-1 min-w-0">
           <h1 className="text-[26px] font-black text-[#dc2626] tracking-tight leading-none mb-1">{companyName}</h1>
@@ -178,7 +178,7 @@ function TplClassic({ quotation: q, companyName, companyTagline, companyAddress,
 // ── Template 2: Formal ────────────────────────────────────────────────────────
 function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite }: TplProps) {
   return (
-    <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:px-0 print:py-0 text-[11px] text-black">
+    <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:p-0 print:w-full text-[11px] text-black w-full box-border">
       <div className="text-center mb-4 pb-3 border-b border-black">
         <h1 className="text-[26px] font-black text-[#dc2626] tracking-tight leading-none mb-1">{companyName}</h1>
         <p className="text-xs font-medium text-neutral-600 mt-0.5">{companyTagline}</p>
@@ -331,7 +331,7 @@ export default function QuotationViewPage({ params }: { params: Promise<{ id: st
   const activeTpl = TEMPLATES.find(t => t.id === template)!;
 
   return (
-    <div className="min-h-screen bg-slate-100 py-6 px-3 sm:px-6">
+    <div className="min-h-screen bg-slate-100 py-6 px-3 sm:px-6 print:min-h-0 print:py-0 print:px-0 print:bg-white print:m-0 print:w-full">
 
       {/* Action Bar — screen only ────────────────────────────────────────── */}
       <div className="no-print max-w-[210mm] mx-auto mb-5 bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
@@ -438,7 +438,7 @@ export default function QuotationViewPage({ params }: { params: Promise<{ id: st
       </div>
 
       {/* Printable A4 document */}
-      <div className="print-area max-w-[210mm] mx-auto bg-white text-black shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-slate-200/60 rounded-sm font-sans overflow-hidden">
+      <div className="print-area max-w-[210mm] mx-auto bg-white text-black shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-slate-200/60 rounded-sm font-sans overflow-hidden print:border-none print:shadow-none print:rounded-none print:overflow-visible print:max-w-none print:w-full print:m-0">
         {template === 'classic' && <TplClassic {...tplProps} />}
         {template === 'formal'  && <TplFormal  {...tplProps} />}
       </div>

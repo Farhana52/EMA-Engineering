@@ -31,18 +31,49 @@ body {
 }
 
 /* Print Specific Rules for Commercial Quotation/Invoice */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
 @media print {
+  /* 1. Reset root elements to A4 portrait dimensions */
+  html,
   body {
-    background: #ffffff !important;
-    color: #000000 !important;
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    height: auto !important;
+    min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    display: block !important;
+    overflow: visible !important;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Hide navigation, buttons, and all UI chrome */
+  /* 2. Neutralize all parent wrappers and flex layouts during print */
+  main,
+  .min-h-screen,
+  .min-h-full {
+    display: block !important;
+    width: 210mm !important;
+    min-width: 210mm !important;
+    max-width: 210mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* 3. Hide navigation, buttons, and UI chrome */
   .no-print,
   nav,
   header,
@@ -53,39 +84,45 @@ body {
     display: none !important;
   }
 
-  /* Target the printable paper */
+  /* 4. A4 Printable Document Container with calibrated margins */
   .print-area {
     display: block !important;
-    width: 100% !important;
+    width: 210mm !important;
+    min-width: 210mm !important;
     max-width: 210mm !important;
+    box-sizing: border-box !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 12mm 15mm 14mm 15mm !important;
     box-shadow: none !important;
     border: none !important;
+    border-radius: 0 !important;
     background: #ffffff !important;
     color: #000000 !important;
+    overflow: visible !important;
   }
 
-  /* Prevent table rows from splitting across pages */
-  tr {
-    break-inside: avoid;
-    page-break-inside: avoid;
+  /* 5. Ensure all children fill 100% of printable content width */
+  .print-area > * {
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  /* Keep signature block on same page */
+  /* 6. Prevent awkward page breaks in tables and signatures */
+  tr,
+  table,
   .break-inside-avoid {
-    break-inside: avoid;
-    page-break-inside: avoid;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 
-  /* Ensure table headers repeat on each page for long tables */
   thead {
     display: table-header-group;
   }
 
-  @page {
-    size: A4 portrait;
-    margin: 12mm 12mm 12mm 12mm;
+  /* 7. Preserve exact colors and borders */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }
 
