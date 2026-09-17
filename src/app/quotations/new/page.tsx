@@ -289,7 +289,7 @@ export default function NewQuotationPage() {
           badge="Step 1 of 3"
           subtitle="Set the document type, date, and recipient details."
         >
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Document Type">
               <div className="relative">
                 <select
@@ -311,16 +311,6 @@ export default function NewQuotationPage() {
                 onChange={(e) => setDate(e.target.value)}
                 placeholder="25-08-2026"
                 className={`${INPUT} tabular-nums`}
-              />
-            </Field>
-
-            <Field label="Ref # (Auto if empty)">
-              <input
-                type="text"
-                value={quoteNumber}
-                onChange={(e) => setQuoteNumber(e.target.value)}
-                placeholder="e.g. QT-2026-001"
-                className={INPUT}
               />
             </Field>
           </div>
