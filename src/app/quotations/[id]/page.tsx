@@ -41,11 +41,12 @@ function fmt(n: number) {
   return n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function TableBody({ items, totalQty, totalAmount, bc = 'border-black' }: {
+function TableBody({ items, totalQty, totalAmount, bc = 'border-black', isInvoice = false }: {
   items: Quotation['items'];
   totalQty: number;
   totalAmount: number;
   bc?: string;
+  isInvoice?: boolean;
 }) {
   return (
     <tbody>
@@ -53,34 +54,38 @@ function TableBody({ items, totalQty, totalAmount, bc = 'border-black' }: {
         <tr key={i} className={`border-b ${bc} align-top`} style={{ breakInside: 'avoid' }}>
           <td className={`border-r ${bc} px-2 py-2 text-center font-semibold text-[11px]`}>{item.slNo}</td>
           <td className={`border-r ${bc} px-2.5 py-2 text-left`}><ParticularsRenderer text={item.particulars} /></td>
-          <td className={`border-r ${bc} px-2 py-2 text-right tabular-nums text-[11px]`}>
-            {item.listUnitPrice > 0 ? fmt(item.listUnitPrice) : <span className="opacity-30">—</span>}
-          </td>
+          {!isInvoice && (
+            <td className={`border-r ${bc} px-2 py-2 text-right tabular-nums text-[11px]`}>
+              {item.listUnitPrice > 0 ? fmt(item.listUnitPrice) : <span className="opacity-30">—</span>}
+            </td>
+          )}
           <td className={`border-r ${bc} px-2 py-2 text-right font-semibold tabular-nums text-[11px]`}>{fmt(item.discountPrice)}</td>
           <td className={`border-r ${bc} px-2 py-2 text-center tabular-nums text-[11px]`}>{item.qty.toString().padStart(2,'0')} {item.unit}</td>
           <td className="px-2 py-2 text-right font-bold tabular-nums text-[11px]">{fmt(item.amount)}</td>
         </tr>
       ))}
       <tr className={`border-t ${bc}`}>
-        <td colSpan={4} className={`border-r ${bc} px-2.5 py-1.5 text-right font-bold text-[11px]`}>Total Qty.</td>
+        <td colSpan={isInvoice ? 3 : 4} className={`border-r ${bc} px-2.5 py-1.5 text-right font-bold text-[11px]`}>Total Qty.</td>
         <td className={`border-r ${bc} px-2.5 py-1.5 text-center font-bold tabular-nums text-[11px]`}>{totalQty.toString().padStart(2,'0')}</td>
         <td className="px-2.5 py-1.5" />
       </tr>
       <tr className={`border-t ${bc}`}>
-        <td colSpan={5} className={`border-r ${bc} px-2.5 py-1.5 text-right font-bold text-xs`}>Total Amount</td>
+        <td colSpan={isInvoice ? 4 : 5} className={`border-r ${bc} px-2.5 py-1.5 text-right font-bold text-xs`}>Total Amount</td>
         <td className="px-2.5 py-1.5 text-right font-bold text-xs tabular-nums">{fmt(totalAmount)}</td>
       </tr>
     </tbody>
   );
 }
 
-function Sigs({ companyName, cls = 'border-t border-black' }: { companyName?: string; cls?: string }) {
+function Sigs({ companyName, cls = 'border-t border-black', isInvoice = false }: { companyName?: string; cls?: string; isInvoice?: boolean }) {
   return (
     <div className="mt-14 break-inside-avoid">
       <div className="flex justify-between items-end">
         <div className="text-center w-48">
           <div className={`${cls} pt-2`}>
-            <p className="font-semibold text-[11px] uppercase tracking-wider text-neutral-800">Received Signature</p>
+            <p className="font-semibold text-[11px] uppercase tracking-wider text-neutral-800">
+              {isInvoice ? "Customer's Signature" : "Received Signature"}
+            </p>
           </div>
         </div>
         <div className="text-center w-48">
@@ -108,10 +113,15 @@ function ContactRight({ a, p, e, w, cls = '' }: { a: string; p: string; e?: stri
 }
 
 function ToBlock({ q, cls = '' }: { q: Quotation; cls?: string }) {
+  const isInvoice = q.docType === 'Invoice';
   return (
     <div className={`space-y-0.5 ${cls}`}>
-      <p className="font-semibold text-neutral-600 text-xs">To,</p>
-      {q.clientDesignation && <p className="text-xs text-neutral-700 font-medium">{q.clientDesignation}</p>}
+      <p className="font-bold text-neutral-800 text-xs">{isInvoice ? 'Bill To :' : 'To,'}</p>
+      {q.clientDesignation && (
+        <p className="text-xs text-neutral-700 font-medium">
+          {isInvoice ? `Attn: ${q.clientDesignation}` : q.clientDesignation}
+        </p>
+      )}
       <p className="font-bold text-xs tracking-wide text-neutral-900">{q.clientCompany}</p>
       {q.clientAddress && <p className="text-xs text-neutral-600">{q.clientAddress}</p>}
     </div>
@@ -119,18 +129,31 @@ function ToBlock({ q, cls = '' }: { q: Quotation; cls?: string }) {
 }
 
 function DateRef({ q, cls = '' }: { q: Quotation; cls?: string }) {
+  const isInvoice = q.docType === 'Invoice';
   return (
-    <div className={`text-right flex-shrink-0 text-xs ${cls}`}>
-      <p><span className="font-semibold text-neutral-800">Date :</span> <span className="tabular-nums font-medium text-neutral-700">{q.date}</span></p>
+    <div className={`text-right flex-shrink-0 text-xs space-y-0.5 ${cls}`}>
+      {isInvoice && (
+        <p><span className="font-bold text-neutral-900">Invoice No :</span> <span className="tabular-nums font-bold text-neutral-900">{q.quoteNumber}</span></p>
+      )}
+      <p><span className="font-semibold text-neutral-800">{isInvoice ? 'Invoice Date :' : 'Date :'}</span> <span className="tabular-nums font-medium text-neutral-700">{q.date}</span></p>
+      {isInvoice && q.dueDate && (
+        <p><span className="font-semibold text-neutral-800">Payment Terms :</span> <span className="font-medium text-neutral-700">{q.dueDate}</span></p>
+      )}
+      {isInvoice && q.poNumber && (
+        <p><span className="font-semibold text-neutral-800">PO / Challan Ref :</span> <span className="font-medium text-neutral-700">{q.poNumber}</span></p>
+      )}
     </div>
   );
 }
 
 function Terms({ q }: { q: Quotation }) {
   if (q.showTerms === false || !q.terms?.length) return null;
+  const isInvoice = q.docType === 'Invoice';
   return (
     <div className="text-[11px] mt-4 mb-2 break-inside-avoid">
-      <p className="font-bold underline underline-offset-2 mb-1.5 text-xs text-neutral-900">Terms &amp; Condition:</p>
+      <p className="font-bold underline underline-offset-2 mb-1.5 text-xs text-neutral-900">
+        {isInvoice ? 'Payment Terms & Notes:' : 'Terms & Condition:'}
+      </p>
       <div className="space-y-1 leading-relaxed text-neutral-700">{q.terms.map((t, i) => <p key={i}>{t}</p>)}</div>
     </div>
   );
@@ -139,6 +162,10 @@ function Terms({ q }: { q: Quotation }) {
 // ── Template 1: Classic (Default) ─────────────────────────────────────────────
 function TplClassic({ quotation: q, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite, companyNameColor }: TplProps) {
   const brandColor = q.companyNameColor || companyNameColor || '#dc2626';
+  const isInvoice = q.docType === 'Invoice';
+  const displaySubject = q.subject?.replace(/^[-–—]\s*/, '').trim();
+  const showProjectDesc = isInvoice && displaySubject && !displaySubject.toLowerCase().includes('price offer');
+
   return (
     <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:p-0 print:w-full text-[11px] text-black w-full box-border">
       <div className="flex justify-between items-start gap-4 mb-6">
@@ -152,26 +179,53 @@ function TplClassic({ quotation: q, companyName, companyTagline, companyAddress,
         <h2 className="text-lg sm:text-[19px] font-bold text-black tracking-wider uppercase underline underline-offset-4 decoration-1 decoration-neutral-400">{q.docType}</h2>
       </div>
       <div className="flex justify-between items-start gap-4 mb-4"><ToBlock q={q} /><DateRef q={q} /></div>
-      <div className="mb-4"><p className="font-bold text-xs text-neutral-900">Sub: {q.subject?.replace(/^[-–—]\s*/, '')}</p></div>
-      <div className="mb-5"><p className="font-bold text-xs text-neutral-900 mb-1">{q.salutation}</p><p className="text-left text-xs leading-relaxed text-neutral-700">{q.openingText}</p></div>
+
+      {!isInvoice ? (
+        <>
+          {displaySubject && (
+            <div className="mb-4"><p className="font-bold text-xs text-neutral-900">Sub: {displaySubject}</p></div>
+          )}
+          {q.salutation && (
+            <div className="mb-5">
+              <p className="font-bold text-xs text-neutral-900 mb-1">{q.salutation}</p>
+              {q.openingText && <p className="text-left text-xs leading-relaxed text-neutral-700">{q.openingText}</p>}
+            </div>
+          )}
+        </>
+      ) : showProjectDesc ? (
+        <div className="mb-4">
+          <p className="text-xs text-neutral-800"><span className="font-bold text-neutral-900">Project / Description:</span> {displaySubject}</p>
+        </div>
+      ) : null}
+
       <div className="mb-5">
         <table className="w-full border-collapse border border-black text-[10.5px]">
           <thead>
-            <tr className="border-b border-black text-black font-bold text-[11px]">
-              <th className="border-r border-black px-2 py-2 w-10 text-center">SL.</th>
-              <th className="border-r border-black px-2.5 py-2 text-left">Particulars</th>
-              <th className="border-r border-black px-2 py-2 w-[76px] text-right leading-snug">List Unit<br/>Price</th>
-              <th className="border-r border-black px-2 py-2 w-[80px] text-right leading-snug">After<br/>Discount<br/>Price</th>
-              <th className="border-r border-black px-2 py-2 w-14 text-center">Qty</th>
-              <th className="px-2 py-2 w-[84px] text-right leading-snug">Amount<br/>(BDT)</th>
-            </tr>
+            {isInvoice ? (
+              <tr className="border-b border-black text-black font-bold text-[11px]">
+                <th className="border-r border-black px-2 py-2 w-10 text-center">SL.</th>
+                <th className="border-r border-black px-2.5 py-2 text-left">Description of Goods / Services</th>
+                <th className="border-r border-black px-2 py-2 w-[86px] text-right leading-snug">Unit Price<br/>(BDT)</th>
+                <th className="border-r border-black px-2 py-2 w-16 text-center">Qty</th>
+                <th className="px-2 py-2 w-[90px] text-right leading-snug">Amount<br/>(BDT)</th>
+              </tr>
+            ) : (
+              <tr className="border-b border-black text-black font-bold text-[11px]">
+                <th className="border-r border-black px-2 py-2 w-10 text-center">SL.</th>
+                <th className="border-r border-black px-2.5 py-2 text-left">Particulars</th>
+                <th className="border-r border-black px-2 py-2 w-[76px] text-right leading-snug">List Unit<br/>Price</th>
+                <th className="border-r border-black px-2 py-2 w-[80px] text-right leading-snug">After<br/>Discount<br/>Price</th>
+                <th className="border-r border-black px-2 py-2 w-14 text-center">Qty</th>
+                <th className="px-2 py-2 w-[84px] text-right leading-snug">Amount<br/>(BDT)</th>
+              </tr>
+            )}
           </thead>
-          <TableBody items={q.items} totalQty={q.totalQty} totalAmount={q.totalAmount} />
+          <TableBody items={q.items} totalQty={q.totalQty} totalAmount={q.totalAmount} isInvoice={isInvoice} />
         </table>
       </div>
       <div className="mb-5 text-xs"><p><span className="font-bold text-neutral-900">In Word Taka : </span><span className="font-medium text-neutral-800">{q.inWords}</span></p></div>
       <Terms q={q} />
-      <Sigs companyName={companyName} />
+      <Sigs companyName={companyName} isInvoice={isInvoice} />
     </div>
   );
 }
@@ -179,6 +233,10 @@ function TplClassic({ quotation: q, companyName, companyTagline, companyAddress,
 // ── Template 2: Formal ────────────────────────────────────────────────────────
 function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, companyPhone, companyEmail, companyWebsite, companyNameColor }: TplProps) {
   const brandColor = q.companyNameColor || companyNameColor || '#dc2626';
+  const isInvoice = q.docType === 'Invoice';
+  const displaySubject = q.subject?.replace(/^[-–—]\s*/, '').trim();
+  const showProjectDesc = isInvoice && displaySubject && !displaySubject.toLowerCase().includes('price offer');
+
   return (
     <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:p-0 print:w-full text-[11px] text-black w-full box-border">
       <div className="text-center mb-4 pb-3 border-b border-black">
@@ -197,26 +255,53 @@ function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, 
         <h2 className="text-lg sm:text-[19px] font-bold text-black tracking-wider uppercase underline underline-offset-4 decoration-1 decoration-neutral-400">{q.docType}</h2>
       </div>
       <div className="flex justify-between items-start mb-4"><ToBlock q={q} /><DateRef q={q} /></div>
-      <div className="mb-3"><p className="font-bold text-xs text-neutral-900">Sub: {q.subject?.replace(/^[-–—]\s*/, '')}</p></div>
-      <div className="mb-4"><p className="font-bold text-xs text-neutral-900 mb-1">{q.salutation}</p><p className="text-left text-xs leading-relaxed text-neutral-700">{q.openingText}</p></div>
+
+      {!isInvoice ? (
+        <>
+          {displaySubject && (
+            <div className="mb-3"><p className="font-bold text-xs text-neutral-900">Sub: {displaySubject}</p></div>
+          )}
+          {q.salutation && (
+            <div className="mb-4">
+              <p className="font-bold text-xs text-neutral-900 mb-1">{q.salutation}</p>
+              {q.openingText && <p className="text-left text-xs leading-relaxed text-neutral-700">{q.openingText}</p>}
+            </div>
+          )}
+        </>
+      ) : showProjectDesc ? (
+        <div className="mb-3">
+          <p className="text-xs text-neutral-800"><span className="font-bold text-neutral-900">Project / Description:</span> {displaySubject}</p>
+        </div>
+      ) : null}
+
       <div className="mb-4">
         <table className="w-full border-collapse border border-black text-[10.5px]">
           <thead>
-            <tr className="border-b border-black text-black font-bold text-[11px]">
-              <th className="border-r border-black px-2 py-2 w-10 text-center">SL.No</th>
-              <th className="border-r border-black px-2.5 py-2 text-left">Particulars</th>
-              <th className="border-r border-black px-2 py-2 w-[76px] text-right leading-snug">List Unit<br/>Price</th>
-              <th className="border-r border-black px-2 py-2 w-[80px] text-right leading-snug">After<br/>Discount<br/>Price</th>
-              <th className="border-r border-black px-2 py-2 w-14 text-center">Qty</th>
-              <th className="px-2 py-2 w-[84px] text-right leading-snug">Amount<br/>(BDT)</th>
-            </tr>
+            {isInvoice ? (
+              <tr className="border-b border-black text-black font-bold text-[11px]">
+                <th className="border-r border-black px-2 py-2 w-10 text-center">SL.No</th>
+                <th className="border-r border-black px-2.5 py-2 text-left">Description of Goods / Services</th>
+                <th className="border-r border-black px-2 py-2 w-[86px] text-right leading-snug">Unit Price<br/>(BDT)</th>
+                <th className="border-r border-black px-2 py-2 w-16 text-center">Qty</th>
+                <th className="px-2 py-2 w-[90px] text-right leading-snug">Amount<br/>(BDT)</th>
+              </tr>
+            ) : (
+              <tr className="border-b border-black text-black font-bold text-[11px]">
+                <th className="border-r border-black px-2 py-2 w-10 text-center">SL.No</th>
+                <th className="border-r border-black px-2.5 py-2 text-left">Particulars</th>
+                <th className="border-r border-black px-2 py-2 w-[76px] text-right leading-snug">List Unit<br/>Price</th>
+                <th className="border-r border-black px-2 py-2 w-[80px] text-right leading-snug">After<br/>Discount<br/>Price</th>
+                <th className="border-r border-black px-2 py-2 w-14 text-center">Qty</th>
+                <th className="px-2 py-2 w-[84px] text-right leading-snug">Amount<br/>(BDT)</th>
+              </tr>
+            )}
           </thead>
-          <TableBody items={q.items} totalQty={q.totalQty} totalAmount={q.totalAmount} />
+          <TableBody items={q.items} totalQty={q.totalQty} totalAmount={q.totalAmount} isInvoice={isInvoice} />
         </table>
       </div>
       <div className="mb-4 text-xs"><p><span className="font-bold text-neutral-900">In Word Taka : </span><span className="font-medium text-neutral-800">{q.inWords}</span></p></div>
       <Terms q={q} />
-      <Sigs companyName={companyName} />
+      <Sigs companyName={companyName} isInvoice={isInvoice} />
     </div>
   );
 }

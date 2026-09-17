@@ -55,6 +55,8 @@ export interface Quotation {
   showTerms?: boolean;
   companyAddress?: string;
   companyNameColor?: string;
+  poNumber?: string;
+  dueDate?: string;
   status: 'Draft' | 'Sent' | 'Accepted' | 'Declined';
   createdAt?: string;
   updatedAt?: string;

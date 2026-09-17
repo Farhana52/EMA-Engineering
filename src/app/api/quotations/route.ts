@@ -70,20 +70,24 @@ export async function POST(req: Request) {
     const totalAmount = items.reduce((acc, curr) => acc + curr.amount, 0);
     const inWords = numberToWordsTaka(totalAmount);
 
-    const quoteCount = await db.collection('quotations').countDocuments();
-    const generatedQuoteNumber = body.quoteNumber || `QT-${new Date().getFullYear()}-${(quoteCount + 1).toString().padStart(3, '0')}`;
+    const docType = body.docType === 'Invoice' ? 'Invoice' : 'Quotation';
+    const prefix = docType === 'Invoice' ? 'INV' : 'QT';
+    const quoteCount = await db.collection('quotations').countDocuments({ docType });
+    const generatedQuoteNumber = body.quoteNumber || `${prefix}-${new Date().getFullYear()}-${(quoteCount + 1).toString().padStart(3, '0')}`;
 
     const newQuotation = {
       quoteNumber: generatedQuoteNumber,
-      docType: body.docType || 'Quotation',
+      docType,
       date: body.date || new Date().toISOString().split('T')[0],
       clientName: body.clientName || '',
       clientDesignation: body.clientDesignation || '',
       clientCompany: body.clientCompany || '',
       clientAddress: body.clientAddress || '',
       subject: body.subject || '',
-      salutation: body.salutation || 'Dear Sir,',
-      openingText: body.openingText || 'Thank you for your requirement. We have the great pleasure to quote you our best prices as follows:',
+      salutation: docType === 'Invoice' ? (body.salutation || '') : (body.salutation || 'Dear Sir,'),
+      openingText: docType === 'Invoice' ? (body.openingText || '') : (body.openingText || 'Thank you for your requirement. We have the great pleasure to quote you our best prices as follows:'),
+      poNumber: body.poNumber || '',
+      dueDate: body.dueDate || '',
       items,
       totalQty,
       totalAmount,

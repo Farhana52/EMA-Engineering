@@ -73,6 +73,8 @@ export async function PUT(
       subject: body.subject || '',
       salutation: body.salutation || 'Dear Sir,',
       openingText: body.openingText || '',
+      poNumber: body.poNumber || '',
+      dueDate: body.dueDate || '',
       items,
       totalQty,
       totalAmount,

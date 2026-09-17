@@ -106,6 +106,8 @@ export default function NewQuotationPage() {
     return `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
   });
   const [quoteNumber, setQuoteNumber] = useState('');
+  const [poNumber, setPoNumber] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
   /* client */
   const [clientDesignation, setClientDesignation] = useState('Managing Director');
@@ -204,6 +206,33 @@ export default function NewQuotationPage() {
     setItems(updated);
   };
 
+  const handleDocTypeChange = (newType: 'Quotation' | 'Invoice') => {
+    setDocType(newType);
+    if (newType === 'Invoice') {
+      if (subject === 'Price offer for Inverter Service Charge.') {
+        setSubject('');
+      }
+      if (terms.length === 3 && terms[0]?.includes('valid for a period of 15 days')) {
+        setTerms([
+          `01) Payment should be made through Cheque / Pay Order / Bank Transfer in favor of ${companyName || 'EMA Engineering'}.`,
+          '02) VAT & Tax as per Bangladesh Govt. rules.',
+          '03) Goods/Service received in satisfactory condition.',
+        ]);
+      }
+    } else {
+      if (!subject.trim()) {
+        setSubject('Price offer for Inverter Service Charge.');
+      }
+      if (terms.length === 3 && terms[0]?.includes('Cheque / Pay Order')) {
+        setTerms([
+          '01) Our offer will remain valid for a period of 15 days from the date of this offer.',
+          '02) 100% cash/PO/Cheque as an advance before delivery.',
+          '03) VAT encluded the above-mentioned price value and AIT as per Govt. rule.',
+        ]);
+      }
+    }
+  };
+
   const togglePreview = (idx: number) => {
     setExpandedPreviews((prev) => {
       const next = new Set(prev);
@@ -220,6 +249,10 @@ export default function NewQuotationPage() {
     e?.preventDefault();
     if (!clientCompany.trim()) {
       showToast('Client Company name is required.', 'error');
+      return;
+    }
+    if (docType === 'Quotation' && !subject.trim()) {
+      showToast('Subject is required for quotations.', 'error');
       return;
     }
 
@@ -239,7 +272,11 @@ export default function NewQuotationPage() {
         body: JSON.stringify({
           quoteNumber: quoteNumber.trim() || undefined,
           docType, date, clientDesignation, clientCompany, clientAddress,
-          subject, salutation, openingText,
+          subject: subject.trim(),
+          salutation: docType === 'Invoice' ? '' : salutation,
+          openingText: docType === 'Invoice' ? '' : openingText,
+          poNumber: poNumber.trim() || undefined,
+          dueDate: dueDate.trim() || undefined,
           items: sanitizedItems,
           totalQty, totalAmount, inWords, terms, showTerms, companyAddress,
           companyNameColor,
@@ -300,26 +337,30 @@ export default function NewQuotationPage() {
         {/* ── Section 1: Document + Client ── */}
         <Card
           icon={FileText}
-          title="Document & Recipient"
+          title={docType === 'Invoice' ? 'Invoice & Client Details' : 'Document & Recipient'}
           badge="Step 1 of 3"
-          subtitle="Set the document type, date, and recipient details."
+          subtitle={
+            docType === 'Invoice'
+              ? 'Set invoice details, payment terms, and client billing info.'
+              : 'Set the document type, date, and recipient details.'
+          }
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Document Type">
               <div className="relative">
                 <select
                   value={docType}
-                  onChange={(e) => setDocType(e.target.value as 'Quotation' | 'Invoice')}
-                  className={`${INPUT} appearance-none pr-9`}
+                  onChange={(e) => handleDocTypeChange(e.target.value as 'Quotation' | 'Invoice')}
+                  className={`${INPUT} appearance-none pr-9 font-semibold text-blue-700`}
                 >
-                  <option value="Quotation">Quotation</option>
-                  <option value="Invoice">Invoice</option>
+                  <option value="Quotation">Quotation (Price Offer)</option>
+                  <option value="Invoice">Invoice (Commercial Bill)</option>
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
               </div>
             </Field>
 
-            <Field label="Date (DD-MM-YYYY)">
+            <Field label={docType === 'Invoice' ? 'Invoice Date (DD-MM-YYYY)' : 'Date (DD-MM-YYYY)'}>
               <input
                 type="text"
                 value={date}
@@ -328,6 +369,30 @@ export default function NewQuotationPage() {
                 className={`${INPUT} tabular-nums`}
               />
             </Field>
+
+            {docType === 'Invoice' && (
+              <>
+                <Field label="Payment Terms / Due (Optional)">
+                  <input
+                    type="text"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                    placeholder="e.g. Due on Receipt, Net 15, or 30-09-2026"
+                    className={INPUT}
+                  />
+                </Field>
+
+                <Field label="PO / Challan / Work Order # (Optional)">
+                  <input
+                    type="text"
+                    value={poNumber}
+                    onChange={(e) => setPoNumber(e.target.value)}
+                    placeholder="e.g. PO-2026-0891 or Challan #104"
+                    className={INPUT}
+                  />
+                </Field>
+              </>
+            )}
           </div>
 
           {/* ── Company Header Branding Color ── */}
@@ -405,7 +470,7 @@ export default function NewQuotationPage() {
           <div className="mt-1 h-px bg-slate-100" />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-            <Field label="Recipient Designation">
+            <Field label={docType === 'Invoice' ? 'Attn / Client Designation' : 'Recipient Designation'}>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                 <input
@@ -418,7 +483,7 @@ export default function NewQuotationPage() {
               </div>
             </Field>
 
-            <Field label="Client Company" required span="sm:col-span-2">
+            <Field label={docType === 'Invoice' ? 'Bill To (Company Name)' : 'Client Company'} required span="sm:col-span-2">
               <input
                 type="text"
                 required
@@ -442,39 +507,59 @@ export default function NewQuotationPage() {
               </div>
             </Field>
 
-            <Field label="Subject" required span="sm:col-span-3">
-              <div className="relative">
-                <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
-                <input
-                  type="text"
-                  required
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  placeholder="Price offer for Inverter Service Charge."
-                  className={`${INPUT} pl-9 font-semibold`}
-                />
-              </div>
-            </Field>
+            {docType === 'Quotation' ? (
+              <>
+                <Field label="Subject" required span="sm:col-span-3">
+                  <div className="relative">
+                    <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                    <input
+                      type="text"
+                      required
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      placeholder="Price offer for Inverter Service Charge."
+                      className={`${INPUT} pl-9 font-semibold`}
+                    />
+                  </div>
+                </Field>
 
-            <Field label="Salutation">
-              <input
-                type="text"
-                value={salutation}
-                onChange={(e) => setSalutation(e.target.value)}
-                placeholder="Dear Sir,"
-                className={INPUT}
-              />
-            </Field>
+                <Field label="Salutation">
+                  <input
+                    type="text"
+                    value={salutation}
+                    onChange={(e) => setSalutation(e.target.value)}
+                    placeholder="Dear Sir,"
+                    className={INPUT}
+                  />
+                </Field>
 
-            <Field label="Opening Statement" span="sm:col-span-2">
-              <input
-                type="text"
-                value={openingText}
-                onChange={(e) => setOpeningText(e.target.value)}
-                placeholder="Thank you for your requirement…"
-                className={INPUT}
-              />
-            </Field>
+                <Field label="Opening Statement" span="sm:col-span-2">
+                  <input
+                    type="text"
+                    value={openingText}
+                    onChange={(e) => setOpeningText(e.target.value)}
+                    placeholder="Thank you for your requirement…"
+                    className={INPUT}
+                  />
+                </Field>
+              </>
+            ) : (
+              <Field label="Project / Billing Description (Optional)" span="sm:col-span-3">
+                <div className="relative">
+                  <MessageSquare className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+                  <input
+                    type="text"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    placeholder="e.g. Frequency Inverter Repair & Servicing Charge (Optional)"
+                    className={`${INPUT} pl-9`}
+                  />
+                </div>
+                <p className="text-[11px] text-slate-500 mt-1">
+                  Proposal letter salutation (&quot;Dear Sir,&quot;, quote opening text) is automatically excluded for commercial invoices.
+                </p>
+              </Field>
+            )}
           </div>
         </Card>
 
