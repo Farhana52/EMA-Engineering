@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Building2, Save, Plus, Trash2, CheckCircle2, AlertCircle, FileText, Phone, MapPin, Palette } from 'lucide-react';
+import { Building2, Save, Plus, Trash2, Phone, MapPin, Palette } from 'lucide-react';
 import { CompanySettings } from '@/types/invoice';
 import { useToast } from '@/components/Toast';
 
@@ -109,10 +109,6 @@ export default function SettingsPage() {
       </div>
     );
   }
-
-  // Determine what contacts will show in the document footer
-  const willShowPhone = settings.showPhone !== false && Boolean(settings.phone?.trim());
-  const willShowAddress = settings.showAddress !== false && Boolean(settings.address?.trim());
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
@@ -338,44 +334,6 @@ export default function SettingsPage() {
                 className="w-full bg-white border border-slate-200 hover:border-slate-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-medium placeholder:text-slate-400 shadow-xs transition-all outline-none"
               />
             </div>
-          </div>
-
-          {/* Live Document Footer Preview Box */}
-          <div className="mt-6 p-5 rounded-2xl border border-blue-200/80 bg-blue-50/40 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2 text-blue-900">
-                <FileText className="w-4 h-4 text-blue-600" />
-                <h3 className="text-xs font-bold uppercase tracking-wider">
-                  Document Footer Live Preview (প্রিন্ট ডকুমেন্টে যেভাবে দেখাবে)
-                </h3>
-              </div>
-              <span className="text-[11px] text-blue-600 font-medium">Real-time Simulation</span>
-            </div>
-
-            <div className="p-4 bg-white rounded-xl border border-slate-200 text-xs text-black space-y-2 shadow-2xs">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-t border-slate-300 pt-3">
-                <div>
-                  <p className="font-bold uppercase tracking-wide text-slate-900">{settings.name || 'COMPANY NAME'}</p>
-                  {willShowAddress ? (
-                    <p className="text-slate-700 font-medium">{settings.address}</p>
-                  ) : (
-                    <p className="text-[11px] text-slate-400 italic">(Address hidden by toggle)</p>
-                  )}
-                </div>
-
-                <div className="sm:text-right text-[11px] text-slate-800 space-y-0.5">
-                  {willShowPhone ? (
-                    <p className="font-medium"><span className="font-semibold">Phone:</span> {settings.phone}</p>
-                  ) : (
-                    <p className="text-[11px] text-slate-400 italic">(Phone hidden by toggle)</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <p className="text-[11px] text-slate-600 leading-relaxed">
-              💡 <strong>টিপস:</strong> আপনি যদি ডকুমেন্টে শুধু <strong>ফোন নম্বর</strong> অথবা শুধু <strong>ঠিকানা</strong> দেখাতে চান, তবে সংশ্লিষ্ট টগলটি ON/OFF করতে পারেন। &quot;Save Settings&quot; বাটনে ক্লিক করলেই সেটিংসগুলো MongoDB-তে স্থায়ীভাবে সংরক্ষিত হবে।
-            </p>
           </div>
         </div>
 
