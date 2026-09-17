@@ -52,26 +52,26 @@ function TableBody({ items, totalQty, totalAmount, bc = 'border-black', isInvoic
     <tbody>
       {items.map((item, i) => (
         <tr key={i} className={`border-b ${bc} align-top`} style={{ breakInside: 'avoid' }}>
-          <td className={`border-r ${bc} px-2 py-2 text-center font-semibold text-[11px]`}>{item.slNo}</td>
+          <td className={`border-r ${bc} px-2 py-2 text-center font-semibold text-[11px] text-black`}>{item.slNo}</td>
           <td className={`border-r ${bc} px-2.5 py-2 text-left`}><ParticularsRenderer text={item.particulars} /></td>
           {!isInvoice && (
-            <td className={`border-r ${bc} px-2 py-2 text-right tabular-nums text-[11px]`}>
-              {item.listUnitPrice > 0 ? fmt(item.listUnitPrice) : <span className="opacity-30">—</span>}
+            <td className={`border-r ${bc} px-2 py-2 text-right tabular-nums text-[11px] font-semibold text-black`}>
+              {item.listUnitPrice > 0 ? fmt(item.listUnitPrice) : <span className="text-neutral-400">—</span>}
             </td>
           )}
-          <td className={`border-r ${bc} px-2 py-2 text-right font-semibold tabular-nums text-[11px]`}>{fmt(item.discountPrice)}</td>
-          <td className={`border-r ${bc} px-2 py-2 text-center tabular-nums text-[11px]`}>{item.qty.toString().padStart(2,'0')} {item.unit}</td>
-          <td className="px-2 py-2 text-right font-bold tabular-nums text-[11px]">{fmt(item.amount)}</td>
+          <td className={`border-r ${bc} px-2 py-2 text-right font-semibold tabular-nums text-[11px] text-black`}>{fmt(item.discountPrice)}</td>
+          <td className={`border-r ${bc} px-2 py-2 text-center tabular-nums text-[11px] font-semibold text-black`}>{item.qty.toString().padStart(2,'0')} {item.unit}</td>
+          <td className="px-2 py-2 text-right font-bold tabular-nums text-[11px] text-black">{fmt(item.amount)}</td>
         </tr>
       ))}
       <tr className={`border-t ${bc}`}>
-        <td colSpan={isInvoice ? 3 : 4} className={`border-r ${bc} px-2.5 py-1.5 text-right font-bold text-[11px]`}>Total Qty.</td>
-        <td className={`border-r ${bc} px-2.5 py-1.5 text-center font-bold tabular-nums text-[11px]`}>{totalQty.toString().padStart(2,'0')}</td>
+        <td colSpan={isInvoice ? 3 : 4} className={`border-r ${bc} px-2.5 py-1.5 text-right font-bold text-[11px] text-black`}>Total Qty.</td>
+        <td className={`border-r ${bc} px-2.5 py-1.5 text-center font-bold tabular-nums text-[11px] text-black`}>{totalQty.toString().padStart(2,'0')}</td>
         <td className="px-2.5 py-1.5" />
       </tr>
       <tr className={`border-t ${bc}`}>
-        <td colSpan={isInvoice ? 4 : 5} className={`border-r ${bc} px-2.5 py-1.5 text-right font-bold text-xs`}>Total Amount</td>
-        <td className="px-2.5 py-1.5 text-right font-bold text-xs tabular-nums">{fmt(totalAmount)}</td>
+        <td colSpan={isInvoice ? 4 : 5} className={`border-r ${bc} px-2.5 py-1.5 text-right font-bold text-xs text-black`}>Total Amount</td>
+        <td className="px-2.5 py-1.5 text-right font-bold text-xs tabular-nums text-black">{fmt(totalAmount)}</td>
       </tr>
     </tbody>
   );
@@ -79,18 +79,18 @@ function TableBody({ items, totalQty, totalAmount, bc = 'border-black', isInvoic
 
 function Sigs({ companyName, cls = 'border-t border-black', isInvoice = false }: { companyName?: string; cls?: string; isInvoice?: boolean }) {
   return (
-    <div className="mt-20 sm:mt-24 pt-2 break-inside-avoid">
+    <div className="mt-20 sm:mt-24 pt-2 break-inside-avoid text-black">
       <div className="flex justify-between items-end">
         <div className="text-center w-[150px]">
           <div className={`${cls} pt-2`}>
-            <p className="font-medium text-[10px] sm:text-[10.5px] uppercase tracking-wider text-neutral-600 whitespace-nowrap">
+            <p className="font-bold text-[10px] sm:text-[10.5px] uppercase tracking-wider text-black whitespace-nowrap">
               {isInvoice ? "Customer's Signature" : "Received Signature"}
             </p>
           </div>
         </div>
         <div className="text-center w-[150px]">
           <div className={`${cls} pt-2`}>
-            <p className="font-medium text-[10px] sm:text-[10.5px] uppercase tracking-wider text-neutral-600 whitespace-nowrap">
+            <p className="font-bold text-[10px] sm:text-[10.5px] uppercase tracking-wider text-black whitespace-nowrap">
               Authorized Signature
             </p>
           </div>
@@ -103,12 +103,12 @@ function Sigs({ companyName, cls = 'border-t border-black', isInvoice = false }:
 function ContactRight({ a, p, e, w, cls = '' }: { a: string; p: string; e?: string; w?: string; cls?: string }) {
   if (!a && !p && !e && !w) return null;
   return (
-    <div className={`text-right text-[11px] leading-[1.6] flex-shrink-0 max-w-[280px] ${cls}`}>
-      {a && <p className="font-bold text-neutral-900 leading-snug mb-1">{a}</p>}
-      <div className="space-y-0.5 text-neutral-600">
-        {p && <p><span className="font-semibold text-neutral-800">Phone:</span> {p}</p>}
-        {e && <p><span className="font-semibold text-neutral-800">Email:</span> {e}</p>}
-        {w && <p><span className="font-semibold text-neutral-800">Web:</span> {w}</p>}
+    <div className={`text-right text-[11px] leading-[1.6] flex-shrink-0 max-w-[280px] text-black ${cls}`}>
+      {a && <p className="font-bold text-black leading-snug mb-1">{a}</p>}
+      <div className="space-y-0.5 text-black font-medium">
+        {p && <p><span className="font-bold text-black">Phone:</span> {p}</p>}
+        {e && <p><span className="font-bold text-black">Email:</span> {e}</p>}
+        {w && <p><span className="font-bold text-black">Web:</span> {w}</p>}
       </div>
     </div>
   );
@@ -116,24 +116,25 @@ function ContactRight({ a, p, e, w, cls = '' }: { a: string; p: string; e?: stri
 
 function ToBlock({ q, cls = '' }: { q: Quotation; cls?: string }) {
   const isInvoice = q.docType === 'Invoice';
+  const isCompanyBold = q.boldClientCompany !== false;
   return (
-    <div className={`space-y-0.5 ${cls}`}>
-      <p className="font-bold text-neutral-800 text-xs">{isInvoice ? 'Bill To :' : 'To,'}</p>
+    <div className={`space-y-0.5 text-black ${cls}`}>
+      <p className="font-bold text-black text-xs">{isInvoice ? 'Bill To :' : 'To,'}</p>
       {q.clientDesignation && (
-        <p className="text-xs text-neutral-700 font-medium">
+        <p className="text-xs text-black font-medium">
           {isInvoice ? `Attn: ${q.clientDesignation}` : q.clientDesignation}
         </p>
       )}
-      <p className="font-bold text-xs tracking-wide text-neutral-900">{q.clientCompany}</p>
-      {q.clientAddress && <p className="text-xs text-neutral-600">{q.clientAddress}</p>}
+      <p className={`text-xs tracking-wide text-black ${isCompanyBold ? 'font-bold' : 'font-medium'}`}>{q.clientCompany}</p>
+      {q.clientAddress && <p className="text-xs text-black font-medium">{q.clientAddress}</p>}
     </div>
   );
 }
 
 function DateRef({ q, cls = '' }: { q: Quotation; cls?: string }) {
   return (
-    <div className={`text-right flex-shrink-0 text-xs ${cls}`}>
-      <p><span className="font-semibold text-neutral-800">Date :</span> <span className="tabular-nums font-medium text-neutral-700">{q.date}</span></p>
+    <div className={`text-right flex-shrink-0 text-xs text-black ${cls}`}>
+      <p><span className="font-bold text-black">Date :</span> <span className="tabular-nums font-semibold text-black">{q.date}</span></p>
     </div>
   );
 }
@@ -142,11 +143,11 @@ function Terms({ q }: { q: Quotation }) {
   if (q.showTerms === false || !q.terms?.length) return null;
   const isInvoice = q.docType === 'Invoice';
   return (
-    <div className="text-[11px] mt-4 mb-2 break-inside-avoid">
-      <p className="font-bold underline underline-offset-2 mb-1.5 text-xs text-neutral-900">
+    <div className="text-[11px] mt-4 mb-2 break-inside-avoid text-black">
+      <p className="font-bold underline underline-offset-2 mb-1.5 text-xs text-black">
         {isInvoice ? 'Payment Terms & Notes:' : 'Terms & Condition:'}
       </p>
-      <div className="space-y-1 leading-relaxed text-neutral-700">{q.terms.map((t, i) => <p key={i}>{t}</p>)}</div>
+      <div className="space-y-1 leading-relaxed text-black font-medium">{q.terms.map((t, i) => <p key={i}>{t}</p>)}</div>
     </div>
   );
 }
@@ -163,7 +164,7 @@ function TplClassic({ quotation: q, companyName, companyTagline, companyAddress,
       <div className="flex justify-between items-start gap-4 mb-6">
         <div className="flex-1 min-w-0">
           <h1 className="text-[26px] font-black tracking-tight leading-none mb-1" style={{ color: brandColor }}>{companyName}</h1>
-          <p className="text-[11px] font-medium italic text-neutral-600">{companyTagline}</p>
+          <p className="text-[11px] font-medium italic text-black">{companyTagline}</p>
         </div>
         <ContactRight a={companyAddress} p={companyPhone} e={companyEmail} w={companyWebsite} />
       </div>
@@ -175,18 +176,18 @@ function TplClassic({ quotation: q, companyName, companyTagline, companyAddress,
       {!isInvoice ? (
         <>
           {displaySubject && (
-            <div className="mb-4"><p className="font-bold text-xs text-neutral-900">Sub: {displaySubject}</p></div>
+            <div className="mb-4"><p className="font-bold text-xs text-black">Sub: {displaySubject}</p></div>
           )}
           {q.salutation && (
             <div className="mb-5">
-              <p className="font-bold text-xs text-neutral-900 mb-1">{q.salutation}</p>
-              {q.openingText && <p className="text-left text-xs leading-relaxed text-neutral-700">{q.openingText}</p>}
+              <p className="font-bold text-xs text-black mb-1">{q.salutation}</p>
+              {q.openingText && <p className="text-left text-xs leading-relaxed text-black font-medium">{q.openingText}</p>}
             </div>
           )}
         </>
       ) : showProjectDesc ? (
         <div className="mb-4">
-          <p className="text-xs text-neutral-800"><span className="font-bold text-neutral-900">Project / Description:</span> {displaySubject}</p>
+          <p className="text-xs text-black font-medium"><span className="font-bold text-black">Project / Description:</span> {displaySubject}</p>
         </div>
       ) : null}
 
@@ -215,7 +216,7 @@ function TplClassic({ quotation: q, companyName, companyTagline, companyAddress,
           <TableBody items={q.items} totalQty={q.totalQty} totalAmount={q.totalAmount} isInvoice={isInvoice} />
         </table>
       </div>
-      <div className="mb-5 text-xs"><p><span className="font-bold text-neutral-900">In Word Taka : </span><span className="font-medium text-neutral-800">{q.inWords}</span></p></div>
+      <div className="mb-5 text-xs text-black"><p><span className="font-bold text-black">In Word Taka : </span><span className="font-semibold text-black">{q.inWords}</span></p></div>
       <Terms q={q} />
       <Sigs companyName={companyName} isInvoice={isInvoice} />
     </div>
@@ -233,12 +234,12 @@ function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, 
     <div className="px-8 pt-7 pb-8 sm:px-12 sm:pt-10 sm:pb-10 print:p-0 print:w-full text-[11px] text-black w-full box-border">
       <div className="text-center mb-4 pb-3 border-b border-black">
         <h1 className="text-[26px] font-black tracking-tight leading-none mb-1" style={{ color: brandColor }}>{companyName}</h1>
-        <p className="text-xs font-medium text-neutral-600 mt-0.5">{companyTagline}</p>
+        <p className="text-xs font-semibold text-black mt-0.5">{companyTagline}</p>
         {companyAddress && (
-          <p className="text-[11px] font-bold text-neutral-900 mt-1.5">{companyAddress}</p>
+          <p className="text-[11px] font-bold text-black mt-1.5">{companyAddress}</p>
         )}
         {(companyPhone || companyEmail || companyWebsite) && (
-          <p className="text-[10.5px] text-neutral-600 mt-0.5 font-medium">
+          <p className="text-[10.5px] text-black mt-0.5 font-semibold">
             {[companyPhone && `Phone: ${companyPhone}`, companyEmail && `Email: ${companyEmail}`, companyWebsite && `Web: ${companyWebsite}`].filter(Boolean).join('  |  ')}
           </p>
         )}
@@ -251,18 +252,18 @@ function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, 
       {!isInvoice ? (
         <>
           {displaySubject && (
-            <div className="mb-3"><p className="font-bold text-xs text-neutral-900">Sub: {displaySubject}</p></div>
+            <div className="mb-3"><p className="font-bold text-xs text-black">Sub: {displaySubject}</p></div>
           )}
           {q.salutation && (
             <div className="mb-4">
-              <p className="font-bold text-xs text-neutral-900 mb-1">{q.salutation}</p>
-              {q.openingText && <p className="text-left text-xs leading-relaxed text-neutral-700">{q.openingText}</p>}
+              <p className="font-bold text-xs text-black mb-1">{q.salutation}</p>
+              {q.openingText && <p className="text-left text-xs leading-relaxed text-black font-medium">{q.openingText}</p>}
             </div>
           )}
         </>
       ) : showProjectDesc ? (
         <div className="mb-3">
-          <p className="text-xs text-neutral-800"><span className="font-bold text-neutral-900">Project / Description:</span> {displaySubject}</p>
+          <p className="text-xs text-black font-medium"><span className="font-bold text-black">Project / Description:</span> {displaySubject}</p>
         </div>
       ) : null}
 
@@ -291,7 +292,7 @@ function TplFormal({ quotation: q, companyName, companyTagline, companyAddress, 
           <TableBody items={q.items} totalQty={q.totalQty} totalAmount={q.totalAmount} isInvoice={isInvoice} />
         </table>
       </div>
-      <div className="mb-4 text-xs"><p><span className="font-bold text-neutral-900">In Word Taka : </span><span className="font-medium text-neutral-800">{q.inWords}</span></p></div>
+      <div className="mb-4 text-xs text-black"><p><span className="font-bold text-black">In Word Taka : </span><span className="font-semibold text-black">{q.inWords}</span></p></div>
       <Terms q={q} />
       <Sigs companyName={companyName} isInvoice={isInvoice} />
     </div>
@@ -381,6 +382,19 @@ export default function QuotationViewPage({ params }: { params: Promise<{ id: st
     } catch (err) { console.error(err); }
   };
 
+  const handleToggleBoldCompany = async () => {
+    if (!quotation) return;
+    const updated: Quotation = { ...quotation, boldClientCompany: quotation.boldClientCompany === false };
+    setQuotation(updated);
+    try {
+      await fetch(`/api/quotations/${resolvedParams.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated),
+      });
+    } catch (err) { console.error(err); }
+  };
+
   if (loading) {
     return (
       <div className="py-24 text-center text-slate-500">
@@ -455,6 +469,25 @@ export default function QuotationViewPage({ params }: { params: Promise<{ id: st
               </span>
             </div>
 
+            {/* Bold Client Company toggle */}
+            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-xl">
+              <span className="text-xs font-semibold text-slate-600">Bold Company</span>
+              <button
+                type="button"
+                onClick={handleToggleBoldCompany}
+                className={`relative inline-flex h-5 w-8 items-center rounded-full transition-colors focus:outline-none ${
+                  quotation.boldClientCompany !== false ? 'bg-blue-600' : 'bg-slate-300'
+                }`}
+              >
+                <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${
+                  quotation.boldClientCompany !== false ? 'translate-x-3.5' : 'translate-x-0.5'
+                }`} />
+              </button>
+              <span className={`text-[11px] font-bold ${quotation.boldClientCompany !== false ? 'text-blue-700' : 'text-slate-400'}`}>
+                {quotation.boldClientCompany !== false ? 'ON' : 'OFF'}
+              </span>
+            </div>
+
             {/* Status */}
             <select
               value={quotation.status}
@@ -517,10 +550,19 @@ export default function QuotationViewPage({ params }: { params: Promise<{ id: st
         )}
       </div>
 
-      {/* Printable A4 document */}
-      <div className="print-area max-w-[210mm] mx-auto bg-white text-black shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-slate-200/60 rounded-sm font-sans overflow-hidden print:border-none print:shadow-none print:rounded-none print:overflow-visible print:max-w-none print:w-full print:m-0">
-        {template === 'classic' && <TplClassic {...tplProps} />}
-        {template === 'formal'  && <TplFormal  {...tplProps} />}
+      {/* Mobile scroll hint - screen only */}
+      <div className="no-print sm:hidden flex items-center justify-center gap-1.5 text-[11px] font-medium text-slate-500 mb-2">
+        <span className="inline-block px-2.5 py-1 bg-white border border-slate-200/80 rounded-full shadow-2xs">
+          ↔ Swipe sideways to view full A4 document
+        </span>
+      </div>
+
+      {/* Printable A4 document with mobile horizontal scroll wrapper */}
+      <div className="w-full overflow-x-auto pb-6 -mx-3 sm:mx-auto px-3 sm:px-0 print:overflow-visible print:p-0 print:m-0 print:w-full">
+        <div className="print-area min-w-[680px] sm:min-w-0 max-w-[210mm] mx-auto bg-white text-black shadow-[0_2px_20px_rgba(0,0,0,0.08)] border border-slate-200/60 rounded-sm font-sans print:border-none print:shadow-none print:rounded-none print:overflow-visible print:max-w-none print:w-full print:m-0 print:min-w-0">
+          {template === 'classic' && <TplClassic {...tplProps} />}
+          {template === 'formal'  && <TplFormal  {...tplProps} />}
+        </div>
       </div>
 
     </div>

@@ -94,6 +94,7 @@ export async function POST(req: Request) {
       inWords,
       terms: Array.isArray(body.terms) ? body.terms : [],
       showTerms: body.showTerms !== false,
+      boldClientCompany: body.boldClientCompany !== false,
       companyAddress: body.companyAddress || '',
       companyNameColor: body.companyNameColor || '#dc2626',
       status: body.status || 'Draft',

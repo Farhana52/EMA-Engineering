@@ -110,6 +110,7 @@ export default function NewQuotationPage() {
   /* client */
   const [clientDesignation, setClientDesignation] = useState('Managing Director');
   const [clientCompany, setClientCompany] = useState('');
+  const [boldClientCompany, setBoldClientCompany] = useState(true);
   const [clientAddress, setClientAddress] = useState('');
   const [subject, setSubject] = useState('Price offer for Inverter Service Charge.');
   const [salutation, setSalutation] = useState('Dear Sir,');
@@ -269,7 +270,7 @@ export default function NewQuotationPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           quoteNumber: quoteNumber.trim() || undefined,
-          docType, date, clientDesignation, clientCompany, clientAddress,
+          docType, date, clientDesignation, clientCompany, boldClientCompany, clientAddress,
           subject: subject.trim(),
           salutation: docType === 'Invoice' ? '' : salutation,
           openingText: docType === 'Invoice' ? '' : openingText,
@@ -456,16 +457,30 @@ export default function NewQuotationPage() {
               </div>
             </Field>
 
-            <Field label={docType === 'Invoice' ? 'Bill To (Company Name)' : 'Client Company'} required span="sm:col-span-2">
+            <div className="sm:col-span-2">
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-slate-700">
+                  {docType === 'Invoice' ? 'Bill To (Company Name)' : 'Client Company'} <span className="text-rose-500">*</span>
+                </label>
+                <label className="inline-flex items-center gap-1.5 cursor-pointer select-none text-[11px] font-semibold text-slate-600 hover:text-blue-700 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={boldClientCompany}
+                    onChange={(e) => setBoldClientCompany(e.target.checked)}
+                    className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5"
+                  />
+                  <span>Bold company name</span>
+                </label>
+              </div>
               <input
                 type="text"
                 required
                 value={clientCompany}
                 onChange={(e) => setClientCompany(e.target.value)}
                 placeholder="e.g. NewAge Garments Ltd."
-                className={`${INPUT} font-bold`}
+                className={`${INPUT} ${boldClientCompany ? 'font-bold' : 'font-medium'}`}
               />
-            </Field>
+            </div>
 
             <Field label="Client Address" span="sm:col-span-3">
               <div className="relative">

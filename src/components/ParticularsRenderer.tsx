@@ -29,7 +29,7 @@ export default function ParticularsRenderer({ text, className = '' }: Particular
                             !rawLines[0].startsWith('*');
 
   return (
-    <div className={`text-neutral-900 text-[10.5px] leading-normal space-y-0.5 ${className}`}>
+    <div className={`text-black text-[10.5px] leading-normal space-y-0.5 ${className}`}>
       {rawLines.map((line, index) => {
         // First line: Product / Service Title
         if (index === 0 && isFirstLineHeading) {
@@ -40,7 +40,7 @@ export default function ParticularsRenderer({ text, className = '' }: Particular
           return (
             <div
               key={index}
-              className="font-semibold text-neutral-950 text-[10.5px] leading-snug mb-0.5"
+              className="font-bold text-black text-[10.5px] leading-snug mb-0.5"
             >
               {displayTitle}
             </div>
@@ -54,16 +54,16 @@ export default function ParticularsRenderer({ text, className = '' }: Particular
           const colonMatch = content.match(/^([^:]+:)\s*(.+)$/);
 
           return (
-            <div key={index} className="flex items-start space-x-1.5 pl-0.5 text-[10px]">
-              <span className="text-neutral-400 font-bold select-none leading-none mt-0.5">•</span>
+            <div key={index} className="flex items-start space-x-1.5 pl-0.5 text-[10px] text-black">
+              <span className="text-black font-bold select-none leading-none mt-0.5">•</span>
               <div className="leading-snug flex-1">
                 {colonMatch ? (
                   <>
-                    <span className="font-medium text-neutral-800">{colonMatch[1]} </span>
-                    <span className="text-neutral-600 font-normal">{colonMatch[2]}</span>
+                    <span className="font-semibold text-black">{colonMatch[1]} </span>
+                    <span className="text-black font-medium">{colonMatch[2]}</span>
                   </>
                 ) : (
-                  <span className="text-neutral-600 font-normal">{content}</span>
+                  <span className="text-black font-medium">{content}</span>
                 )}
               </div>
             </div>
@@ -77,16 +77,16 @@ export default function ParticularsRenderer({ text, className = '' }: Particular
           const valText = keyValMatch[2];
 
           return (
-            <div key={index} className="text-[10px] leading-snug">
-              <span className="font-medium text-neutral-800">{keyLabel} </span>
-              <span className="text-neutral-600 font-normal">{valText}</span>
+            <div key={index} className="text-[10px] leading-snug text-black">
+              <span className="font-semibold text-black">{keyLabel} </span>
+              <span className="text-black font-medium">{valText}</span>
             </div>
           );
         }
 
         // Regular text line
         return (
-          <div key={index} className="text-[10px] text-neutral-600 font-normal leading-snug">
+          <div key={index} className="text-[10px] text-black font-medium leading-snug">
             {line}
           </div>
         );

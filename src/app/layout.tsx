@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import { ToastProvider } from '@/components/Toast';
@@ -6,6 +6,12 @@ import { ToastProvider } from '@/components/Toast';
 export const metadata: Metadata = {
   title: 'Invoice & Quotation System | Enterprise Billing',
   description: 'Commercial quotation and invoice generation software system with MongoDB integration and high-fidelity PDF export.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

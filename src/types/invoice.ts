@@ -53,6 +53,7 @@ export interface Quotation {
   inWords: string;
   terms: string[];
   showTerms?: boolean;
+  boldClientCompany?: boolean;
   companyAddress?: string;
   companyNameColor?: string;
   poNumber?: string;
