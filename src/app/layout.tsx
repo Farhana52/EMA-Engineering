@@ -6,6 +6,13 @@ import { ToastProvider } from '@/components/Toast';
 export const metadata: Metadata = {
   title: 'Invoice & Quotation System | Enterprise Billing',
   description: 'Commercial quotation and invoice generation software system with MongoDB integration and high-fidelity PDF export.',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export const viewport: Viewport = {
