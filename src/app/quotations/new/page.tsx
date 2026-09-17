@@ -557,10 +557,10 @@ export default function NewQuotationPage() {
             {items.map((item, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs transition-shadow hover:shadow-sm"
+                className="rounded-2xl border border-slate-200 bg-white shadow-xs transition-shadow hover:shadow-sm"
               >
                 {/* Header bar: Item # + Catalog Picker + Delete */}
-                <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2.5 sm:px-4 bg-slate-50/80 border-b border-slate-100">
+                <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2.5 sm:px-4 bg-slate-50/80 border-b border-slate-100 rounded-t-2xl">
                   <div className="flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold tabular-nums shadow-2xs">
                       {item.slNo}

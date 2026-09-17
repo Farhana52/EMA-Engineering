@@ -13,6 +13,7 @@ export default function ProductSearchPicker({ products, onSelect }: ProductSearc
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -22,6 +23,7 @@ export default function ProductSearchPicker({ products, onSelect }: ProductSearc
     };
     if (isOpen) {
       document.addEventListener('mousedown', handleOutsideClick);
+      inputRef.current?.focus({ preventScroll: true });
     }
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [isOpen]);
@@ -47,13 +49,13 @@ export default function ProductSearchPicker({ products, onSelect }: ProductSearc
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 top-[calc(100%+4px)] right-0 sm:left-0 sm:right-auto w-[290px] max-w-[calc(100vw-36px)] bg-white border border-slate-200/80 rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.14)] overflow-hidden flex flex-col transform opacity-100 scale-100 origin-top-right sm:origin-top-left transition-all animate-in fade-in zoom-in-95 duration-200">
+        <div className="absolute z-50 top-[calc(100%+4px)] right-0 w-[290px] max-w-[calc(100vw-36px)] bg-white border border-slate-200/80 rounded-xl shadow-[0_12px_40px_rgba(0,0,0,0.14)] overflow-hidden flex flex-col transform opacity-100 scale-100 origin-top-right transition-all animate-in fade-in zoom-in-95 duration-200">
           <div className="p-2 border-b border-slate-100 bg-slate-50/50">
             <div className="relative">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
               <input
+                ref={inputRef}
                 type="text"
-                autoFocus
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search products..."
