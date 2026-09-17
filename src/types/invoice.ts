@@ -40,7 +40,6 @@ export interface Quotation {
   quoteNumber: string;
   docType: 'Quotation' | 'Invoice';
   date: string;
-  clientName?: string;
   clientDesignation?: string;
   clientCompany: string;
   clientAddress?: string;
@@ -56,8 +55,6 @@ export interface Quotation {
   boldClientCompany?: boolean;
   companyAddress?: string;
   companyNameColor?: string;
-  poNumber?: string;
-  dueDate?: string;
   status: 'Draft' | 'Sent' | 'Accepted' | 'Declined';
   createdAt?: string;
   updatedAt?: string;

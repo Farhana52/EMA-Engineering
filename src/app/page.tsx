@@ -44,33 +44,8 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    let ignore = false;
-    async function init() {
-      try {
-        const [qRes, pRes] = await Promise.all([
-          fetch('/api/quotations'),
-          fetch('/api/products')
-        ]);
-
-        if (qRes.ok) {
-          const qData = await qRes.json();
-          if (!ignore) setQuotations(qData);
-        }
-        if (pRes.ok) {
-          const pData = await pRes.json();
-          if (!ignore) setProductCount(pData.length);
-        }
-      } catch (err) {
-        console.error('Failed to load dashboard:', err);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    }
-    init();
-    return () => {
-      ignore = true;
-    };
-  }, []);
+    loadDashboardData();
+  }, [loadDashboardData]);
 
   const handleSeedSample = async () => {
     setSeeding(true);

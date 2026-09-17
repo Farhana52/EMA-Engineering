@@ -128,13 +128,6 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  // Expose global showToast for universal access
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (window as unknown as { showToast: typeof showToast }).showToast = showToast;
-    }
-  }, [showToast]);
-
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}

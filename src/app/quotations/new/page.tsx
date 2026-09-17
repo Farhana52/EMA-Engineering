@@ -105,7 +105,6 @@ export default function NewQuotationPage() {
     const d = new Date();
     return `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
   });
-  const [quoteNumber, setQuoteNumber] = useState('');
 
   /* client */
   const [clientDesignation, setClientDesignation] = useState('Managing Director');
@@ -269,7 +268,6 @@ export default function NewQuotationPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          quoteNumber: quoteNumber.trim() || undefined,
           docType, date, clientDesignation, clientCompany, boldClientCompany, clientAddress,
           subject: subject.trim(),
           salutation: docType === 'Invoice' ? '' : salutation,

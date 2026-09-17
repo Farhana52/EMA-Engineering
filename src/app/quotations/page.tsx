@@ -37,31 +37,8 @@ export default function QuotationsListPage() {
   }, [search, statusFilter]);
 
   useEffect(() => {
-    let ignore = false;
-    async function fetchQuotes() {
-      try {
-        let url = '/api/quotations';
-        const params = new URLSearchParams();
-        if (search) params.append('search', search);
-        if (statusFilter) params.append('status', statusFilter);
-        if (params.toString()) url += `?${params.toString()}`;
-
-        const res = await fetch(url);
-        if (res.ok) {
-          const data = await res.json();
-          if (!ignore) setQuotations(data);
-        }
-      } catch (err: unknown) {
-        console.error('Failed to load quotations:', err);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    }
-    fetchQuotes();
-    return () => {
-      ignore = true;
-    };
-  }, [search, statusFilter]);
+    loadQuotations();
+  }, [loadQuotations]);
 
   useEffect(() => {
     setCurrentPage(1);

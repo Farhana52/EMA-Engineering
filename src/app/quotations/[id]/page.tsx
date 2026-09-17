@@ -415,7 +415,7 @@ export default function QuotationViewPage({ params }: { params: Promise<{ id: st
 
   const companyName    = settings?.name    || 'EMA Engineering';
   const companyTagline = settings?.tagline || 'The power you can trust!';
-  const companyAddress = quotation.companyAddress || settings?.address || '';
+  const companyAddress = settings?.showAddress !== false ? (quotation.companyAddress || settings?.address || '') : '';
   const companyPhone   = settings?.showPhone   !== false ? (settings?.phone   || '') : '';
   const companyEmail   = settings?.showEmail   !== false ? (settings?.email   || '') : '';
   const companyWebsite = settings?.showWebsite !== false ? (settings?.website || '') : '';

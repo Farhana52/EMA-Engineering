@@ -45,24 +45,7 @@ export default function ProductsPage() {
   };
 
   useEffect(() => {
-    let ignore = false;
-    async function initFetch() {
-      try {
-        const res = await fetch('/api/products');
-        if (res.ok) {
-          const data = await res.json();
-          if (!ignore) setProducts(data);
-        }
-      } catch (err) {
-        console.error('Failed to load products:', err);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    }
-    initFetch();
-    return () => {
-      ignore = true;
-    };
+    loadProducts();
   }, []);
 
   const openCreateModal = () => {

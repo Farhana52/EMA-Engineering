@@ -7,8 +7,6 @@ interface GlobalWithMongo {
   _mongoClientPromise?: Promise<MongoClient>;
 }
 
-let clientPromise: Promise<MongoClient>;
-
 /**
  * Global singleton pattern for MongoDB connections in Vercel serverless environments.
  * Prevents exhausting database connection pool on warm lambdas and hot-reloads.
@@ -19,14 +17,6 @@ function getClientPromise(): Promise<MongoClient> {
   }
 
   const globalWithMongo = global as typeof globalThis & GlobalWithMongo;
-
-  if (process.env.NODE_ENV === 'development') {
-    if (!globalWithMongo._mongoClientPromise) {
-      const client = new MongoClient(uri, { maxPoolSize: 10 });
-      globalWithMongo._mongoClientPromise = client.connect();
-    }
-    return globalWithMongo._mongoClientPromise;
-  }
 
   if (!globalWithMongo._mongoClientPromise) {
     const client = new MongoClient(uri, { maxPoolSize: 10 });
